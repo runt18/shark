@@ -19,11 +19,11 @@ class ScriptOperatorHelper(val op: ScriptOperator) extends ScriptOperator {
 
   def getAlias: String = op.alias
 
-  def addJobConfToEnvironment(conf: Configuration, env: JMap[String, String]) {
-    ScriptOperator.addJobConfToEnvironment(conf, env)
+  override def addJobConfToEnvironment(conf: Configuration, env: JMap[String, String]) {
+    new ScriptOperator().addJobConfToEnvironment(conf, env)
   }
 
-  def safeEnvVarName(variable: String): String = {
-    ScriptOperator.safeEnvVarName(variable)
+  override def safeEnvVarName(variable: String): String = {
+    new ScriptOperator().safeEnvVarName(variable)
   }
 }

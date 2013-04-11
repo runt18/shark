@@ -7,10 +7,11 @@ object SharkBuild extends Build {
 
   // Hadoop version to build against. For example, "0.20.2", "0.20.205.0", or
   // "1.0.1" for Apache releases, or "0.20.2-cdh3u3" for Cloudera Hadoop.
-  val HADOOP_VERSION = "0.20.205.0"
+  val HADOOP_VERSION = "2.0.0-mr1-cdh4.1.1"
+  val HADOOP_MAJOR_VERSION = "2"
 
   // Spark version to build against.
-  val SPARK_VERSION = "0.6.1"
+  val SPARK_VERSION = "0.6.2"
 
   lazy val root = Project(
     id = "root",
@@ -58,6 +59,9 @@ object SharkBuild extends Build {
       "it.unimi.dsi" % "fastutil" % "6.4.2",
       "org.scalatest" %% "scalatest" % "1.6.1" % "test",
       "junit" % "junit" % "4.10" % "test")
+
+   ++ (if (HADOOP_MAJOR_VERSION == "2") Some("org.apache.hadoop" % "hadoop-client" % HADOOP_VERSION) else None).toSeq,
+   unmanagedSourceDirectories in Compile <+= baseDirectory{ _ / ("src/hadoop" + HADOOP_MAJOR_VERSION + "/scala") }
 
   ) ++ assemblySettings ++ Seq(test in assembly := {}) ++ Seq(getClassPathTask)
 
